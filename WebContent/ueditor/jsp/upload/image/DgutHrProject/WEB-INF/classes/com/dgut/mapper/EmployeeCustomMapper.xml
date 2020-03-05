@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.mapper.EmployeeCustomMapper" >
+  <resultMap id="EmployeeCustomMap" type="com.dgut.bean.Employee" >
+  
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="job_id" property="jobId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="post_code" property="postCode" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="qq_num" property="qqNum" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="party" property="party" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="race" property="race" jdbcType="VARCHAR" />
+    <result column="education" property="education" jdbcType="VARCHAR" />
+    <result column="speciality" property="speciality" jdbcType="VARCHAR" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    
+    <association property="dept" javaType="com.dgut.bean.Dept">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+    	<result column="deptname" property="name" jdbcType="VARCHAR" />
+    	<result column="remark" property="remark" jdbcType="VARCHAR" />
+    </association>
+    
+    <association property="job" javaType="com.dgut.bean.Job">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+    	<result column="jobname" property="name" jdbcType="VARCHAR" />
+    	<result column="remark" property="remark" jdbcType="VARCHAR" />
+    </association>
+    
+  </resultMap>
+  
+  <select id="findEmployees" resultMap="EmployeeCustomMap">
+  	select 
+  	employee.id,
+  	employee.dept_id,
+  	employee.job_id,
+  	employee.name,
+  	employee.card_id,
+  	employee.address,
+  	employee.post_code,
+  	employee.tel,
+  	employee.phone,
+  	employee.qq_num,
+  	employee.email,
+  	employee.sex,
+  	employee.party,
+  	employee.birthday,
+  	employee.race,
+  	employee.education,
+  	employee.speciality,
+  	employee.hobby,
+  	employee.remark,
+  	employee.create_date,
+  	dept.name AS deptname,
+  	job.name AS jobname
+  	from dept,job,employee 
+  	where 
+  	employee.dept_id=dept.ID and employee.job_id=job.ID
+  </select>
+  
+ 
+  
+</mapper>

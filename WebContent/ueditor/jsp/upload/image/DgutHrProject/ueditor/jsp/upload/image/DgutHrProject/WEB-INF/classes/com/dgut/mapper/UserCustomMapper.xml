@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.mapper.UserCustomMapper" >
+  <resultMap id="UserCustomMap" type="com.dgut.bean.User" >
+  
+    <id column="number" property="number" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <!-- <result column="email" property="email" jdbcType="VARCHAR" /> -->
+    <association property="role" javaType="com.dgut.bean.Role">
+        <id column="id" property="id" jdbcType="INTEGER" />
+    	<result column="name" property="name" jdbcType="VARCHAR" />
+    	<result column="remark" property="remark" jdbcType="VARCHAR" />
+    </association>
+    
+  </resultMap>
+  <select id="findUserAndRoleName" resultMap="UserCustomMap">
+  	select 
+  	user.number,
+  	user.password,
+  	role.name,
+  	user.phone,
+  	user.createdate,
+  	user.username,
+  	user.remark
+  	<!-- user.email -->
+  	from user,role where user.role_id=role.id
+  </select>
+  
+  <select id="findUser" parameterType="String" resultMap="UserCustomMap">
+  	select 
+  	user.number,
+  	user.password,
+  	role.name,
+  	user.phone,
+  	user.createdate,
+  	user.username,
+  	user.remark
+  	<!-- user.email -->
+  	from user,role where user.role_id=role.id and user.number like #{number}
+  </select>
+  
+  <select id="findUserLike" parameterType="com.dgut.bean.User" resultMap="UserCustomMap">
+  	select 
+  	user.number,
+  	user.password,
+  	user.role_Id,
+  	role.name,
+  	user.phone,
+  	user.createdate,
+  	user.username,
+  	user.remark
+  	<!-- user.email -->
+  	from user,role
+  	
+  	<where>
+  	user.role_id=role.id
+  	<if test="number!=null and number!='' ">
+  		and user.number like #{number}
+  	</if>
+  	
+  	<if test="username!=null and username!='' ">
+  		and user.username like #{username}
+  	</if>
+  	
+  	<if test="phone!=null and phone!='' ">
+  		and user.phone like #{phone}
+  	</if>
+  	
+  	<!-- <if test="email!=null and email!='' ">
+  		and user.email like #{email}
+  	</if> -->
+  	
+  	<if test="roleId!=null and roleId!='' ">
+  		and user.role_Id=#{roleId}
+  	</if>
+  	</where> 
+  </select>
+  
+</mapper>
